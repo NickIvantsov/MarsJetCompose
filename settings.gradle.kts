@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "MarsJetCompose"
-include ':app'
+include (":app")
