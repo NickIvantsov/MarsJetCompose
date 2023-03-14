@@ -1,7 +1,7 @@
 object Versions {
 
     //JVM
-    const val jvmTarget = "1.8"
+    const val jvmTarget = "11"
 
     //app level
     const val gradle = "4.0.1"
@@ -29,4 +29,6 @@ object Versions {
 
     //DI
     const val hilt = "2.44"
+
+    val lifecycleVersion = "2.6.0"
 }

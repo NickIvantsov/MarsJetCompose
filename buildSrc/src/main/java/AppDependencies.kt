@@ -46,6 +46,26 @@ object AppDependencies {
     val hiltAndroid = "com.google.dagger:hilt-android:${Versions.hilt}"
     val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
 
+    // ViewModel
+    val lifecycleViewmodelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycleVersion}"
+
+    // ViewModel utilities for Compose
+    val lifecycleViewmodelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.lifecycleVersion}"
+
+    // LiveData
+    val lifecycleLivedataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycleVersion}"
+
+    // Lifecycles only (without ViewModel or LiveData)
+    val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleVersion}"
+    val lifecycleRuntimeCompose = "androidx.lifecycle:lifecycle-runtime-compose:${Versions.lifecycleVersion}"
+
+    // Saved state module for ViewModel
+    val lifecycleViewmodelSavedstate =
+        "androidx.lifecycle:lifecycle-viewmodel-savedstate:${Versions.lifecycleVersion}"
+
+    // Annotation processor
+    val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycleVersion}"
+
     val appLibraries = arrayListOf<String>().apply {
         add(coreKtx)
         add(activityCompose)
@@ -60,6 +80,12 @@ object AppDependencies {
         add(coroutines)
         add(coroutinesCore)
         add(hiltAndroid)
+        add(lifecycleViewmodelKtx)
+        add(lifecycleViewmodelCompose)
+        add(lifecycleLivedataKtx)
+        add(lifecycleRuntimeKtx)
+        add(lifecycleViewmodelSavedstate)
+        add(lifecycleRuntimeCompose)
     }
 
     val annotationProcessorLibs = arrayListOf<String>().apply {
@@ -68,6 +94,7 @@ object AppDependencies {
     val kaptLibs = arrayListOf<String>().apply {
         add(glideCompiler)
         add(hiltCompiler)
+        add(lifecycleCompiler)
     }
     val androidTestLibraries = arrayListOf<String>().apply {
         add(extJUnit)
