@@ -1,7 +1,6 @@
 package com.ivantsov.marsjetcompose.data.api
 
-import com.ivantsov.marsphotos.data.model.PhotoItem
-import com.ivantsov.marsphotos.data.model.PhotoList
+import com.ivantsov.marsjetcompose.data.model.PhotoItem
 import retrofit2.http.GET
 
 interface ApiService {

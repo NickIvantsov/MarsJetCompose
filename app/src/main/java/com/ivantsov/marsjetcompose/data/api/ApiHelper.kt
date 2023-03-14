@@ -1,6 +1,6 @@
 package com.ivantsov.marsjetcompose.data.api
 
-import com.ivantsov.marsphotos.data.model.PhotoItem
+import com.ivantsov.marsjetcompose.data.model.PhotoItem
 
 interface ApiHelper {
 

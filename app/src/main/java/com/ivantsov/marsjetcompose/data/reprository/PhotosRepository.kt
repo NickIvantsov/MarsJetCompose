@@ -1,4 +1,4 @@
-package com.ivantsov.marsphotos.data.reprository
+package com.ivantsov.marsjetcompose.data.reprository
 
 import com.ivantsov.marsjetcompose.data.api.ApiHelper
 

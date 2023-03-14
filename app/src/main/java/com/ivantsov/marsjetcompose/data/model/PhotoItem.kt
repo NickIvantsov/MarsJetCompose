@@ -1,4 +1,4 @@
-package com.ivantsov.marsphotos.data.model
+package com.ivantsov.marsjetcompose.data.model
 
 import com.squareup.moshi.Json
 
