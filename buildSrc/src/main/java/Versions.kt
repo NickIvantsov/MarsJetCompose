@@ -31,4 +31,7 @@ object Versions {
     const val hilt = "2.44"
 
     val lifecycleVersion = "2.6.0"
+
+    //Coil
+    val coil = "2.2.2"
 }

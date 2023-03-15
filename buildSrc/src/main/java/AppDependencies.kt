@@ -66,6 +66,9 @@ object AppDependencies {
     // Annotation processor
     val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycleVersion}"
 
+    //Coil
+    val coil = "io.coil-kt:coil-compose:${Versions.coil}"
+
     val appLibraries = arrayListOf<String>().apply {
         add(coreKtx)
         add(activityCompose)
@@ -86,6 +89,7 @@ object AppDependencies {
         add(lifecycleRuntimeKtx)
         add(lifecycleViewmodelSavedstate)
         add(lifecycleRuntimeCompose)
+        add(coil)
     }
 
     val annotationProcessorLibs = arrayListOf<String>().apply {

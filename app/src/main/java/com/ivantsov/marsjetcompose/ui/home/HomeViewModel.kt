@@ -1,5 +1,6 @@
 package com.ivantsov.marsjetcompose.ui.home
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -62,7 +63,7 @@ private data class HomeViewModelState(
 class HomeViewModel @Inject constructor(
     private val photosRepository: PhotosRepository
 ) : ViewModel() {
-    private val viewModelState = MutableStateFlow(HomeViewModelState(isLoading = true))
+    private val viewModelState = MutableStateFlow(HomeViewModelState(isLoading = false))
 
     val uiState: StateFlow<HomeUiState> = viewModelState
         .map(transform = HomeViewModelState::toUiState)
@@ -79,17 +80,23 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             val result = photosRepository.getPhotos()
             viewModelState.update {
+
                 when (result) {
-                    is Outcome.Success -> it.copy(
-                        photoItemList = it.photoItemList,
-                        isLoading = false
-                    )
+                    is Outcome.Success -> {
+                        Log.d("TAG_1", "it.photoItemList size: ${it.photoItemList?.size}")
+                        it.copy(
+                            isPhotosShowing = true,
+                            photoItemList = result.value,
+                            isLoading = false
+                        )
+
+                    }
                     is Outcome.Failure -> {
                         val errorMessages = it.errorMessages + ErrorMessage(
                             id = UUID.randomUUID().mostSignificantBits,
                             messageId = R.string.load_error
                         )
-                        it.copy(errorMessages = errorMessages, isLoading = false)
+                        it.copy(errorMessages = errorMessages, isLoading = false, isPhotosShowing = false)
                     }
 
                 }
