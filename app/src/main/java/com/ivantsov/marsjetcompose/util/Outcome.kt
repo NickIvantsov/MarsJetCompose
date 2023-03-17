@@ -38,16 +38,13 @@ sealed class Outcome<out T> {
     data class Success<out R>(val value: R) : Outcome<R>()
 
     /**
-     * This subclass represents a failed outcome of an operation. It contains two properties:
-     * message and throwable. The message property is a nullable string that provides an error message,
-     * and the throwable property is a nullable Throwable that provides additional information
+     * This subclass represents a failed outcome of an operation. It contains one property:
+     * throwable. The throwable property is a nullable Throwable that provides additional information
      * about the failure.
      *
-     * @property message - A string that describes the error.
      * @property throwable - The exception that caused the failure.
      */
     data class Failure(
-        val message: String?,
         val throwable: Throwable?
     ) : Outcome<Nothing>()
 }

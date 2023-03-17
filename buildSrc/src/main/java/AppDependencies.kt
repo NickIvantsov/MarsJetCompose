@@ -9,6 +9,8 @@ object AppDependencies {
     const val composeUI = "androidx.compose.ui:ui:${Versions.composeUiVersion}"
     const val composeUIToolingPreview =
         "androidx.compose.ui:ui-tooling-preview:${Versions.composeUiVersion}"
+    const val uiTooling = "androidx.compose.ui:ui-tooling:${Versions.composeUiVersion}"
+
     const val composeMaterial = "androidx.compose.material:material:${Versions.composeMaterial}"
 
     //Glide
@@ -74,6 +76,7 @@ object AppDependencies {
         add(activityCompose)
         add(composeUI)
         add(composeUIToolingPreview)
+        add(uiTooling)
         add(composeMaterial)
         add(glide)
         add(glideOkhttp3Integration)

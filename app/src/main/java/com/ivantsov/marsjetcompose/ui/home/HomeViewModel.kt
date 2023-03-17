@@ -1,6 +1,5 @@
 package com.ivantsov.marsjetcompose.ui.home
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -8,11 +7,14 @@ import androidx.lifecycle.viewModelScope
 import com.ivantsov.marsjetcompose.R
 import com.ivantsov.marsjetcompose.data.model.PhotoItem
 import com.ivantsov.marsjetcompose.data.reprository.PhotosRepository
+import com.ivantsov.marsjetcompose.di.IoDispatcher
 import com.ivantsov.marsjetcompose.util.ErrorMessage
 import com.ivantsov.marsjetcompose.util.Outcome
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 
@@ -61,7 +63,8 @@ private data class HomeViewModelState(
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val photosRepository: PhotosRepository
+    private val photosRepository: PhotosRepository,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
     private val viewModelState = MutableStateFlow(HomeViewModelState(isLoading = false))
 
@@ -78,12 +81,14 @@ class HomeViewModel @Inject constructor(
         viewModelState.update { it.copy(isLoading = true) }
 
         viewModelScope.launch {
-            val result = photosRepository.getPhotos()
+            val result = withContext(ioDispatcher) {
+                photosRepository.getPhotos()
+            }
+
             viewModelState.update {
 
                 when (result) {
                     is Outcome.Success -> {
-                        Log.d("TAG_1", "it.photoItemList size: ${it.photoItemList?.size}")
                         it.copy(
                             isPhotosShowing = true,
                             photoItemList = result.value,
@@ -96,11 +101,22 @@ class HomeViewModel @Inject constructor(
                             id = UUID.randomUUID().mostSignificantBits,
                             messageId = R.string.load_error
                         )
-                        it.copy(errorMessages = errorMessages, isLoading = false, isPhotosShowing = false)
-                    }
 
+                        it.copy(
+                            errorMessages = errorMessages,
+                            isLoading = false,
+                            isPhotosShowing = false
+                        )
+                    }
                 }
             }
+        }
+    }
+
+    fun errorShown(errorId: Long) {
+        viewModelState.update { currentUiState ->
+            val errorMessages = currentUiState.errorMessages.filterNot { it.id == errorId }
+            currentUiState.copy(errorMessages = errorMessages)
         }
     }
 
@@ -108,11 +124,12 @@ class HomeViewModel @Inject constructor(
     companion object {
 
         fun provideFactory(
-            photosRepository: PhotosRepository
+            photosRepository: PhotosRepository,
+            @IoDispatcher ioDispatcher: CoroutineDispatcher
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return HomeViewModel(photosRepository) as T
+                return HomeViewModel(photosRepository, ioDispatcher) as T
             }
         }
     }

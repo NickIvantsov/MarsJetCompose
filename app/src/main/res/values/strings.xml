@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MarsJetCompose</string>
     <string name="load_error">Can\'t update latest photos</string>
+    <string name="retch_photos">Fetch Photos</string>
 </resources>

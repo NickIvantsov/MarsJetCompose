@@ -11,7 +11,7 @@ class ApiHelperImpl @Inject constructor(private val apiService: ApiService) : Ap
         return try {
             Outcome.Success(apiService.getPhotos())
         } catch (ex: Throwable) {
-            Outcome.Failure(ex.message, ex)
+            Outcome.Failure(ex)
         }
     }
 }
