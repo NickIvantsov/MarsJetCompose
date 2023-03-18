@@ -49,17 +49,22 @@ object AppDependencies {
     val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
 
     // ViewModel
-    val lifecycleViewmodelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycleVersion}"
+    val lifecycleViewmodelKtx =
+        "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycleVersion}"
 
     // ViewModel utilities for Compose
-    val lifecycleViewmodelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.lifecycleVersion}"
+    val lifecycleViewmodelCompose =
+        "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.lifecycleVersion}"
 
     // LiveData
-    val lifecycleLivedataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycleVersion}"
+    val lifecycleLivedataKtx =
+        "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycleVersion}"
 
     // Lifecycles only (without ViewModel or LiveData)
-    val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleVersion}"
-    val lifecycleRuntimeCompose = "androidx.lifecycle:lifecycle-runtime-compose:${Versions.lifecycleVersion}"
+    val lifecycleRuntimeKtx =
+        "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleVersion}"
+    val lifecycleRuntimeCompose =
+        "androidx.lifecycle:lifecycle-runtime-compose:${Versions.lifecycleVersion}"
 
     // Saved state module for ViewModel
     val lifecycleViewmodelSavedstate =
@@ -70,6 +75,15 @@ object AppDependencies {
 
     //Coil
     val coil = "io.coil-kt:coil-compose:${Versions.coil}"
+
+    //Navigation
+    val navigationCommon = "androidx.navigation:navigation-common:${Versions.navigationVersion}"
+    val navigationCommonKtx =
+        "androidx.navigation:navigation-common-ktx:${Versions.navigationVersion}"
+    val navigationCompose = "androidx.navigation:navigation-compose:${Versions.navigationVersion}"
+    val navigationRuntime = "androidx.navigation:navigation-runtime:${Versions.navigationVersion}"
+    val navigationRuntimeKtx =
+        "androidx.navigation:navigation-runtime-ktx:${Versions.navigationVersion}"
 
     val appLibraries = arrayListOf<String>().apply {
         add(coreKtx)
@@ -93,6 +107,11 @@ object AppDependencies {
         add(lifecycleViewmodelSavedstate)
         add(lifecycleRuntimeCompose)
         add(coil)
+        add(navigationCommon)
+        add(navigationCommonKtx)
+        add(navigationCompose)
+        add(navigationRuntime)
+        add(navigationRuntimeKtx)
     }
 
     val annotationProcessorLibs = arrayListOf<String>().apply {

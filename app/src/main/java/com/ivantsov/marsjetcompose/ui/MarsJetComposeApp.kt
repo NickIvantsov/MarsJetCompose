@@ -4,20 +4,41 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import com.ivantsov.marsjetcompose.ui.home.HomeViewModel
-import com.ivantsov.marsjetcompose.ui.home.MainHomeScreen
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.ivantsov.marsjetcompose.data.reprository.PhotosRepository
+import com.ivantsov.marsjetcompose.di.IoDispatcher
 import com.ivantsov.marsjetcompose.ui.theme.MarsJetComposeTheme
+import kotlinx.coroutines.CoroutineDispatcher
 
 @Composable
-fun MarsJetComposeApp(homeViewModel: HomeViewModel) {
+fun MarsJetComposeApp(
+    photosRepository: PhotosRepository, @IoDispatcher ioDispatcher: CoroutineDispatcher
+) {
     MarsJetComposeTheme {
+        val navController = rememberNavController()
+        val navigationActions = remember(navController) {
+            MarsJetComposeNavigationActions(navController)
+        }
+
+        val coroutineScope = rememberCoroutineScope()
+
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+
         // A surface container using the 'background' color from the theme
         Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.background
+            modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
         ) {
-            MainHomeScreen(homeViewModel)
+            MarsJetComposeNavGraph(
+                navController = navController,
+                photosRepository = photosRepository,
+                ioDispatcher = ioDispatcher,
+                navigateToPhotos = navigationActions.navigateToPhotoList
+            )
         }
     }
 }

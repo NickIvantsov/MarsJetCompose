@@ -8,7 +8,7 @@ object Versions {
     const val kotlin = "1.4.0"
 
     //libs
-    const val coreKtx = "1.7.0"
+    const val coreKtx = "1.9.0"
     const val material = "1.8.0"
     const val glide = "4.11.0"
     const val activityCompose = "1.6.1"
@@ -34,4 +34,6 @@ object Versions {
 
     //Coil
     val coil = "2.2.2"
+    //Navigation
+    val navigationVersion = "2.5.3"
 }
