@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.ivantsov.marsjetcompose.util.ErrorMessage
+import com.ivantsov.marsjetcompose.util.net.NetworkObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import java.util.*
@@ -30,7 +31,8 @@ private data class HomeViewModelState(
 }
 
 @HiltViewModel
-class HomeViewModel @Inject constructor() : ViewModel() {
+class HomeViewModel @Inject constructor(networkObserver: NetworkObserver) :
+    ViewModel() {
     private val viewModelState = MutableStateFlow(HomeViewModelState(isLoading = false))
 
     val uiState: StateFlow<HomeUiState> = viewModelState
@@ -40,16 +42,10 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             started = SharingStarted.Eagerly,
             initialValue = viewModelState.value.toUiState()
         )
-
-    // Define ViewModel factory in a companion object
-    companion object {
-
-        fun provideFactory(
-        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return HomeViewModel() as T
-            }
-        }
-    }
+    val networkState = networkObserver.watchNetwork()
+        .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = viewModelState.value.toUiState()
+    )
 }

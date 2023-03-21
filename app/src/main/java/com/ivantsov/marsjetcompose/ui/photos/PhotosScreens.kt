@@ -6,8 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.Card
-import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.*
@@ -19,6 +18,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -26,58 +26,89 @@ import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 import coil.imageLoader
 import coil.request.ImageRequest
+import com.ivantsov.marsjetcompose.R
 import com.ivantsov.marsjetcompose.data.model.PhotoItem
 import com.ivantsov.marsjetcompose.ui.home.ImageLoadingState
 import com.ivantsov.marsjetcompose.util.ErrorInfo
+import com.ivantsov.marsjetcompose.util.net.NetworkObserver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun PhotosScreen(viewModel: PhotosViewModel, modifier: Modifier = Modifier) {
+fun PhotosScreen(
+    viewModel: PhotosViewModel,
+    snackbarHostState: SnackbarHostState,
+    modifier: Modifier = Modifier
+) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     val photosLazyListStates = when (val state = uiState) {
         is PhotosUiState.HasPhotos -> state.photoItemList
         is PhotosUiState.NoPhotos -> {
             emptyList() //todo: need to show screen for a case where no photos
         }
     }
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    ) {
+        if (uiState.isLoading) {
+            //show loading
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()
+                    .padding(it)
+            ) {
+                LinearProgressIndicator()
+            }
+        } else {
+            //show content
+            Box(
+                modifier = modifier.fillMaxSize()
+                    .padding(it),
+                contentAlignment = Alignment.TopStart
+            ) {
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(128.dp),
 
-    if (uiState.isLoading) {
-        //show loading
-        Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-            LinearProgressIndicator()
-        }
-    } else {
-        //show content
-        Box(
-            modifier = modifier.fillMaxSize(),
-            contentAlignment = Alignment.TopStart
-        ) {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(128.dp),
-
-                // content padding
-                contentPadding = PaddingValues(
-                    start = 12.dp,
-                    top = 16.dp,
-                    end = 12.dp,
-                    bottom = 16.dp
-                ),
-                content = {
-                    items(photosLazyListStates) { item ->
-                        Card(
-                            backgroundColor = Color.LightGray,
-                            modifier = Modifier
-                                .padding(4.dp)
-                                .fillMaxWidth(),
-                            elevation = 8.dp,
-                        ) {
-                            ImageCard(item)
+                    // content padding
+                    contentPadding = PaddingValues(
+                        start = 12.dp,
+                        top = 16.dp,
+                        end = 12.dp,
+                        bottom = 16.dp
+                    ),
+                    content = {
+                        items(photosLazyListStates) { item ->
+                            Card(
+                                backgroundColor = Color.LightGray,
+                                modifier = Modifier
+                                    .padding(4.dp)
+                                    .fillMaxWidth(),
+                                elevation = 8.dp,
+                            ) {
+                                ImageCard(item)
+                            }
                         }
                     }
-                }
-            )
+                )
+            }
+        }
+    }
+
+    val networkState by viewModel.networkState.collectAsStateWithLifecycle()
+    val networkErrorText = stringResource(R.string.error_network)
+    LaunchedEffect("errorMessageText1", "retryMessageText1", networkState) {
+
+        when (networkState) {
+            is NetworkObserver.NetworkState.DISABLE -> {
+                snackbarHostState.showSnackbar(
+                    message = networkErrorText
+                )
+            }
+            is NetworkObserver.NetworkState.ENABLE -> {
+
+            }
         }
     }
 }

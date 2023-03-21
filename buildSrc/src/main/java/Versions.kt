@@ -29,6 +29,7 @@ object Versions {
 
     //DI
     const val hilt = "2.44"
+    const val hiltNavigationCompose = "1.0.0"
 
     val lifecycleVersion = "2.6.0"
 

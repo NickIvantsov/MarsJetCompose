@@ -46,7 +46,8 @@ object AppDependencies {
 
     //DI
     val hiltAndroid = "com.google.dagger:hilt-android:${Versions.hilt}"
-    val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
+    val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}" //kapt
+    val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:${Versions.hiltNavigationCompose}"
 
     // ViewModel
     val lifecycleViewmodelKtx =
@@ -85,6 +86,7 @@ object AppDependencies {
     val navigationRuntimeKtx =
         "androidx.navigation:navigation-runtime-ktx:${Versions.navigationVersion}"
 
+
     val appLibraries = arrayListOf<String>().apply {
         add(coreKtx)
         add(activityCompose)
@@ -100,6 +102,7 @@ object AppDependencies {
         add(coroutines)
         add(coroutinesCore)
         add(hiltAndroid)
+        add(hiltNavigationCompose)
         add(lifecycleViewmodelKtx)
         add(lifecycleViewmodelCompose)
         add(lifecycleLivedataKtx)

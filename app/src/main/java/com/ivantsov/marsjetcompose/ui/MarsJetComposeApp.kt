@@ -10,15 +10,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.ivantsov.marsjetcompose.data.reprository.PhotosRepository
-import com.ivantsov.marsjetcompose.di.IoDispatcher
 import com.ivantsov.marsjetcompose.ui.theme.MarsJetComposeTheme
-import kotlinx.coroutines.CoroutineDispatcher
 
 @Composable
-fun MarsJetComposeApp(
-    photosRepository: PhotosRepository, @IoDispatcher ioDispatcher: CoroutineDispatcher
-) {
+fun MarsJetComposeApp() {
     MarsJetComposeTheme {
         val navController = rememberNavController()
         val navigationActions = remember(navController) {
@@ -35,8 +30,6 @@ fun MarsJetComposeApp(
         ) {
             MarsJetComposeNavGraph(
                 navController = navController,
-                photosRepository = photosRepository,
-                ioDispatcher = ioDispatcher,
                 navigateToPhotos = navigationActions.navigateToPhotoList
             )
         }

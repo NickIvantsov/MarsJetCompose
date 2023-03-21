@@ -15,6 +15,7 @@ fun HomeRoute(
     MainHomeScreen(
         homeViewModel = homeViewModel,
         navigateToPhotos = navigateToPhotos,
-        modifier = modifier
+        modifier = modifier,
+        snackbarHostState = snackbarHostState
     )
 }

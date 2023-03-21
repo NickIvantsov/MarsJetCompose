@@ -12,5 +12,5 @@ fun PhotosRoute(
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 ) {
-    PhotosScreen(viewModel = viewModel, modifier = modifier)
+    PhotosScreen(viewModel = viewModel, snackbarHostState = snackbarHostState, modifier = modifier)
 }

@@ -2,4 +2,6 @@
     <string name="app_name">MarsJetCompose</string>
     <string name="load_error">Can\'t update latest photos</string>
     <string name="retch_photos">Fetch Photos</string>
+    <string name="error_network">Check your internet connection and try again!</string>
+    <string name="ok">OK</string>
 </resources>

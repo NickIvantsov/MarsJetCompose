@@ -9,6 +9,7 @@ import com.ivantsov.marsjetcompose.data.reprository.PhotosRepository
 import com.ivantsov.marsjetcompose.di.IoDispatcher
 import com.ivantsov.marsjetcompose.util.ErrorMessage
 import com.ivantsov.marsjetcompose.util.Outcome
+import com.ivantsov.marsjetcompose.util.net.NetworkObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
@@ -63,12 +64,20 @@ private data class PhotosViewModelState(
 @HiltViewModel
 class PhotosViewModel @Inject constructor(
     private val photosRepository: PhotosRepository,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    networkObserver: NetworkObserver,
 ) : ViewModel() {
     private val viewModelState = MutableStateFlow(PhotosViewModelState(isLoading = false))
 
     val uiState: StateFlow<PhotosUiState> = viewModelState
         .map(transform = PhotosViewModelState::toUiState)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = viewModelState.value.toUiState()
+        )
+
+    val networkState = networkObserver.watchNetwork()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
@@ -120,20 +129,6 @@ class PhotosViewModel @Inject constructor(
         viewModelState.update { currentUiState ->
             val errorMessages = currentUiState.errorMessages.filterNot { it.id == errorId }
             currentUiState.copy(errorMessages = errorMessages)
-        }
-    }
-
-    // Define ViewModel factory in a companion object
-    companion object {
-
-        fun provideFactory(
-            photosRepository: PhotosRepository,
-            @IoDispatcher ioDispatcher: CoroutineDispatcher
-        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return PhotosViewModel(photosRepository, ioDispatcher) as T
-            }
         }
     }
 }
