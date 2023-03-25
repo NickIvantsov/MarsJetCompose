@@ -47,7 +47,8 @@ object AppDependencies {
     //DI
     val hiltAndroid = "com.google.dagger:hilt-android:${Versions.hilt}"
     val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}" //kapt
-    val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:${Versions.hiltNavigationCompose}"
+    val hiltNavigationCompose =
+        "androidx.hilt:hilt-navigation-compose:${Versions.hiltNavigationCompose}"
 
     // ViewModel
     val lifecycleViewmodelKtx =
@@ -86,95 +87,95 @@ object AppDependencies {
     val navigationRuntimeKtx =
         "androidx.navigation:navigation-runtime-ktx:${Versions.navigationVersion}"
 
+    //Paging
+    val pagingRuntime = "androidx.paging:paging-runtime:3.1.1"
+    val pagingCompose = "androidx.paging:paging-compose:1.0.0-alpha16"
+    val pagingCommonKtx = "androidx.paging:paging-common-ktx:3.1.1"
 
-    val appLibraries = arrayListOf<String>().apply {
-        add(coreKtx)
-        add(activityCompose)
-        add(composeUI)
-        add(composeUIToolingPreview)
-        add(uiTooling)
-        add(composeMaterial)
-        add(glide)
-        add(glideOkhttp3Integration)
-        add(retrofit2)
-        add(moshi)
-        add(retrofit2ConverterMoshi)
-        add(coroutines)
-        add(coroutinesCore)
-        add(hiltAndroid)
-        add(hiltNavigationCompose)
-        add(lifecycleViewmodelKtx)
-        add(lifecycleViewmodelCompose)
-        add(lifecycleLivedataKtx)
-        add(lifecycleRuntimeKtx)
-        add(lifecycleViewmodelSavedstate)
-        add(lifecycleRuntimeCompose)
-        add(coil)
-        add(navigationCommon)
-        add(navigationCommonKtx)
-        add(navigationCompose)
-        add(navigationRuntime)
-        add(navigationRuntimeKtx)
-    }
 
-    val annotationProcessorLibs = arrayListOf<String>().apply {
-        add(glideCompiler)
-    }
-    val kaptLibs = arrayListOf<String>().apply {
-        add(glideCompiler)
-        add(hiltCompiler)
-        add(lifecycleCompiler)
-    }
-    val androidTestLibraries = arrayListOf<String>().apply {
-        add(extJUnit)
-        add(espressoCore)
-        add(composeUITestJunit)
-    }
+    val appLibraries = listOf<String>(
+        coreKtx,
+        activityCompose,
+        composeUI,
+        composeUIToolingPreview,
+        uiTooling,
+        composeMaterial,
+        glide,
+        glideOkhttp3Integration,
+        retrofit2,
+        moshi,
+        retrofit2ConverterMoshi,
+        coroutines,
+        coroutinesCore,
+        hiltAndroid,
+        hiltNavigationCompose,
+        lifecycleViewmodelKtx,
+        lifecycleViewmodelCompose,
+        lifecycleLivedataKtx,
+        lifecycleRuntimeKtx,
+        lifecycleViewmodelSavedstate,
+        lifecycleRuntimeCompose,
+        coil,
+        navigationCommon,
+        navigationCommonKtx,
+        navigationCompose,
+        navigationRuntime,
+        navigationRuntimeKtx,
+        pagingRuntime,
+        pagingCompose,
+        pagingCommonKtx
+    )
 
-    val testLibraries = arrayListOf<String>().apply {
-        add(junit)
-    }
+    val annotationProcessorLibs = listOf<String>(glideCompiler)
+    val kaptLibs = listOf<String>(
+        glideCompiler, hiltCompiler, lifecycleCompiler
+    )
+    val androidTestLibraries = listOf<String>(
+        extJUnit,
+        espressoCore,
+        composeUITestJunit,
+    )
 
-    val debugComposeLibraries = arrayListOf<String>().apply {
-        add(debugComposeUITooling)
-        add(debugComposeUITestManifest)
-    }
+    val testLibraries = listOf<String>(junit)
+
+    val debugComposeLibraries = listOf<String>(debugComposeUITooling, debugComposeUITestManifest)
 
 }
 
 //util functions for adding the different type dependencies from build.gradle file
 fun DependencyHandler.kapt(list: List<String>) {
     list.forEach { dependency ->
-        add("kapt", dependency)
+        add(/* configurationName = */ "kapt", /* dependencyNotation = */ dependency)
     }
 }
 
 fun DependencyHandler.implementation(list: List<String>) {
     list.forEach { dependency ->
-        add("implementation", dependency)
+        add(/* configurationName = */ "implementation", /* dependencyNotation = */ dependency)
     }
 }
 
 fun DependencyHandler.androidTestImplementation(list: List<String>) {
     list.forEach { dependency ->
-        add("androidTestImplementation", dependency)
+        add(/* configurationName = */ "androidTestImplementation", /* dependencyNotation = */
+            dependency)
     }
 }
 
 fun DependencyHandler.testImplementation(list: List<String>) {
     list.forEach { dependency ->
-        add("testImplementation", dependency)
+        add(/* configurationName = */ "testImplementation", /* dependencyNotation = */ dependency)
     }
 }
 
 fun DependencyHandler.annotationProcessor(list: List<String>) {
     list.forEach { dependency ->
-        add("annotationProcessor", dependency)
+        add(/* configurationName = */ "annotationProcessor", /* dependencyNotation = */ dependency)
     }
 }
 
 fun DependencyHandler.debugImplementation(list: List<String>) {
     list.forEach { dependency ->
-        add("annotationProcessor", dependency)
+        add(/* configurationName = */ "annotationProcessor", /* dependencyNotation = */ dependency)
     }
 }

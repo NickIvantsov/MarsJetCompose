@@ -1,8 +1,8 @@
 package com.ivantsov.marsjetcompose.data.reprository
 
-import com.ivantsov.marsjetcompose.data.api.ApiHelper
-import javax.inject.Inject
+import com.ivantsov.marsjetcompose.data.model.PhotoItem
+import com.ivantsov.marsjetcompose.util.Outcome
 
-class PhotosRepository @Inject constructor(private val apiHelper: ApiHelper) {
-    suspend fun getPhotos() = apiHelper.getPhotos()
+interface PhotosRepository {
+    suspend fun getPhotos(): Outcome<List<PhotoItem>>
 }

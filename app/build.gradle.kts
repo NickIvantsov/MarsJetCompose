@@ -23,14 +23,14 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
+        getByName(BuildType.RELEASE) {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 AppConfig.proguardConsumerRules
             )
         }
-        getByName("debug") {
+        getByName(BuildType.DEBUG) {
             isMinifyEnabled = false
         }
     }

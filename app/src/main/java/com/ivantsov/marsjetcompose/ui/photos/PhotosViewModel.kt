@@ -1,20 +1,18 @@
 package com.ivantsov.marsjetcompose.ui.photos
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.ivantsov.marsjetcompose.R
+import androidx.paging.*
 import com.ivantsov.marsjetcompose.data.model.PhotoItem
+import com.ivantsov.marsjetcompose.data.paging.PhotosPagingSource
 import com.ivantsov.marsjetcompose.data.reprository.PhotosRepository
 import com.ivantsov.marsjetcompose.di.IoDispatcher
 import com.ivantsov.marsjetcompose.util.ErrorMessage
-import com.ivantsov.marsjetcompose.util.Outcome
 import com.ivantsov.marsjetcompose.util.net.NetworkObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 
@@ -64,7 +62,6 @@ private data class PhotosViewModelState(
 @HiltViewModel
 class PhotosViewModel @Inject constructor(
     private val photosRepository: PhotosRepository,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     networkObserver: NetworkObserver,
 ) : ViewModel() {
     private val viewModelState = MutableStateFlow(PhotosViewModelState(isLoading = false))
@@ -84,51 +81,15 @@ class PhotosViewModel @Inject constructor(
             initialValue = viewModelState.value.toUiState()
         )
 
-    init {
-        fetchPhotos()
-    }
+    private val pagingConfig = PagingConfig(
+        pageSize = 10,
+        enablePlaceholders = false,
+        initialLoadSize = 20,
+        prefetchDistance = 5
+    )
+    val photoPager = Pager(
+        config = pagingConfig,
+        pagingSourceFactory = { PhotosPagingSource(photosRepository) }
+    ).flow.cachedIn(viewModelScope)
 
-    fun fetchPhotos() {
-        // Ui state is refreshing
-        viewModelState.update { it.copy(isLoading = true) }
-
-        viewModelScope.launch {
-            val result = withContext(ioDispatcher) {
-                photosRepository.getPhotos()
-            }
-
-            viewModelState.update {
-
-                when (result) {
-                    is Outcome.Success -> {
-                        it.copy(
-                            isPhotosShowing = true,
-                            photoItemList = result.value,
-                            isLoading = false
-                        )
-
-                    }
-                    is Outcome.Failure -> {
-                        val errorMessages = it.errorMessages + ErrorMessage(
-                            id = UUID.randomUUID().mostSignificantBits,
-                            messageId = R.string.load_error
-                        )
-
-                        it.copy(
-                            errorMessages = errorMessages,
-                            isLoading = false,
-                            isPhotosShowing = false
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    fun errorShown(errorId: Long) {
-        viewModelState.update { currentUiState ->
-            val errorMessages = currentUiState.errorMessages.filterNot { it.id == errorId }
-            currentUiState.copy(errorMessages = errorMessages)
-        }
-    }
 }

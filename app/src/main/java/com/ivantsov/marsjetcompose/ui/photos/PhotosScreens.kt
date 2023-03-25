@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
@@ -22,6 +21,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 import coil.imageLoader
@@ -42,56 +44,63 @@ fun PhotosScreen(
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val photoPager: LazyPagingItems<PhotoItem> = viewModel.photoPager.collectAsLazyPagingItems()
 
-    val photosLazyListStates = when (val state = uiState) {
-        is PhotosUiState.HasPhotos -> state.photoItemList
-        is PhotosUiState.NoPhotos -> {
-            emptyList() //todo: need to show screen for a case where no photos
-        }
-    }
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) {
-        if (uiState.isLoading) {
-            //show loading
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize()
-                    .padding(it)
-            ) {
-                LinearProgressIndicator()
-            }
-        } else {
-            //show content
-            Box(
-                modifier = modifier.fillMaxSize()
-                    .padding(it),
-                contentAlignment = Alignment.TopStart
-            ) {
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(128.dp),
 
-                    // content padding
-                    contentPadding = PaddingValues(
-                        start = 12.dp,
-                        top = 16.dp,
-                        end = 12.dp,
-                        bottom = 16.dp
-                    ),
-                    content = {
-                        items(photosLazyListStates) { item ->
-                            Card(
-                                backgroundColor = Color.LightGray,
-                                modifier = Modifier
-                                    .padding(4.dp)
-                                    .fillMaxWidth(),
-                                elevation = 8.dp,
-                            ) {
-                                ImageCard(item)
+        when (photoPager.loadState.refresh) {
+            LoadState.Loading -> {
+                //show loading
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(it)
+                ) {
+                    LinearProgressIndicator()
+                }
+            }
+            is LoadState.Error -> {
+                //TODO implement error state
+            }
+            else -> {
+                //show content
+                Box(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(it),
+                    contentAlignment = Alignment.TopStart
+                ) {
+                    LazyVerticalGrid(
+                        columns = GridCells.Adaptive(128.dp),
+
+                        // content padding
+                        contentPadding = PaddingValues(
+                            start = 12.dp,
+                            top = 16.dp,
+                            end = 12.dp,
+                            bottom = 16.dp
+                        ),
+                        content = {
+                            items(photoPager.itemCount) { item ->
+                                Card(
+                                    backgroundColor = Color.LightGray,
+                                    modifier = Modifier
+                                        .padding(4.dp)
+                                        .fillMaxWidth(),
+                                    elevation = 8.dp,
+                                ) {
+                                    photoPager[item]?.let { photo ->
+                                        ImageCard(photo)
+                                    }
+
+                                }
                             }
                         }
-                    }
-                )
+                    )
+                }
             }
         }
     }
