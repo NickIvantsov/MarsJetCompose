@@ -32,7 +32,10 @@ Paging 3, Moshi, Hilt, and Kotlin.
 
 ## Screenshots
 
-...
+<img src="https://github.com/NickIvantsov/MarsJetCompose/blob/master/screenshots/home.png" alt="Home screen" width="200" height="400" style="display: inline-block">      <img src="https://github.com/NickIvantsov/MarsJetCompose/blob/master/screenshots/photos.png" alt="Photos screen" width="200" height="400" style="display: inline-block">
+
+<img src="https://github.com/NickIvantsov/MarsJetCompose/blob/master/screenshots/photos_landscape.png" alt="Photos screen" width="400" height="200">
+
 
 ## Libraries
 
