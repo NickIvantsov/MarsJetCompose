@@ -13,12 +13,6 @@ object AppDependencies {
 
     const val composeMaterial = "androidx.compose.material:material:${Versions.composeMaterial}"
 
-    //Glide
-    const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
-    const val glideCompiler = "com.github.bumptech.glide:compiler:${Versions.glideCompiler}"
-    const val glideOkhttp3Integration =
-        "com.github.bumptech.glide:okhttp3-integration:${Versions.glideOkhttp3Integration}"
-
     //Retrofit
     const val retrofit2 = "com.squareup.retrofit2:retrofit:${Versions.retrofit2}"
 
@@ -100,8 +94,6 @@ object AppDependencies {
         composeUIToolingPreview,
         uiTooling,
         composeMaterial,
-        glide,
-        glideOkhttp3Integration,
         retrofit2,
         moshi,
         retrofit2ConverterMoshi,
@@ -126,10 +118,7 @@ object AppDependencies {
         pagingCommonKtx
     )
 
-    val annotationProcessorLibs = listOf<String>(glideCompiler)
-    val kaptLibs = listOf<String>(
-        glideCompiler, hiltCompiler, lifecycleCompiler
-    )
+    val kaptLibs = listOf<String>(hiltCompiler, lifecycleCompiler)
     val androidTestLibraries = listOf<String>(
         extJUnit,
         espressoCore,

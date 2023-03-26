@@ -1,0 +1,57 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+package com.ivantsov.marsjetcompose {
+
+    package data {
+        package api {
+            interface ApiService {
+                + getPhotos(): List<PhotoItem>
+            }
+            interface ApiHelper {
+                + getPhotos(): Outcome<List<PhotoItem>>
+            }
+        }
+        package impl {
+            class ApiHelperImpl {
+                - apiService: ApiService
+                + ApiHelperImpl: ApiHelperImpl(ApiService)
+            }
+        }
+
+        package model {
+        note top of PhotoItem : Data class type
+            class PhotoItem {
+                +id: String
+                +imgSrc: String
+            }
+        }
+        ApiHelper <|.. ApiHelperImpl
+        ApiHelperImpl *-- ApiService
+        ApiService <.. PhotoItem
+        ApiHelper <.. PhotoItem
+    }
+
+    package util {
+        abstract class Outcome<out T>
+
+        class Success<out R> {
+            +value: R
+        }
+
+        class Failure {
+            +throwable: Throwable?
+        }
+
+        Outcome <|-- Success
+        Outcome <|-- Failure
+
+
+        ApiService <.. Outcome
+        ApiHelper <.. Outcome
+    }
+
+}
+
+
+@enduml

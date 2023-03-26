@@ -3,10 +3,6 @@ object Versions {
     //JVM
     const val jvmTarget = "11"
 
-    //app level
-    const val gradle = "4.0.1"
-    const val kotlin = "1.4.0"
-
     //libs
     const val coreKtx = "1.9.0"
     const val material = "1.8.0"
