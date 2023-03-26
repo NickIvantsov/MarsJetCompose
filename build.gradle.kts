@@ -5,4 +5,10 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.8.10" apply false
     id("com.google.dagger.hilt.android") version "2.44" apply false
 
+    //Dokka https://kotlinlang.org/docs/dokka-introduction.html
+    id("org.jetbrains.dokka") version "1.8.10"
+}
+
+subprojects {
+    apply(plugin = "org.jetbrains.dokka")
 }
